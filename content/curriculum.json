@@ -1,0 +1,337 @@
+{
+  "modules": [
+    {
+      "id": "mod-01",
+      "number": 1,
+      "title": "Cut & Timing",
+      "description": "Master when and why to cut, cutting on action, eliminating dead air, and jump cuts.",
+      "icon": "scissors",
+      "lessons": [
+        {
+          "id": "timing-01",
+          "title": "Why Cut & Cutting on Thought",
+          "duration": "5 min",
+          "difficulty": "Beginner",
+          "skill": "timing",
+          "concept": "Every cut must have a reason: to change perspective, advance the thought, or cut dead air. Never cut just because time passed.",
+          "why": "Cutting before a thought completes confuses the viewer; cutting too late drains momentum.",
+          "bad_example": "Leaving 1.2s of silent blinking after a sentence ends.",
+          "good_example": "Cutting 0.1s after the speaker finishes their final syllable to bridge into the reaction or next line.",
+          "quiz": {
+            "question": "When should you make a cut during dialogue to maintain momentum?",
+            "options": [
+              "Wait 2 seconds after the speaker stops talking",
+              "Right as the thought/syllable completes cleanly without lingering dead air",
+              "Always in the exact middle of every word",
+              "Only when the speaker blinks"
+            ],
+            "correct": 1,
+            "explanation": "Cutting right as the thought completes preserves meaning while maintaining conversational momentum."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-02",
+      "number": 2,
+      "title": "Pacing & Rhythm",
+      "description": "Understand shot duration, fast vs slow pacing, cadence, energy, and attention resets.",
+      "icon": "activity",
+      "lessons": [
+        {
+          "id": "pacing-01",
+          "title": "Shot Duration & Dead Air (Pacing 01)",
+          "duration": "6 min",
+          "difficulty": "Beginner",
+          "skill": "pacing",
+          "concept": "Pacing is the heartbeat of your video. In modern short-form and high-retention content, shots longer than 3–4 seconds without visual change cause viewer fatigue.",
+          "why": "Human attention requires visual or auditory resets every 2.5–4 seconds. Leaving a static talking head for 5+ seconds makes the edit feel slow and uncurated.",
+          "bad_example": "A static talking head lingering for 6.5s while repeating filler words or hesitating.",
+          "good_example": "Trimming filler pauses, holding shots for 1.8–2.5s on average, and punctuating key moments with B-roll or punch-cuts.",
+          "quiz": {
+            "question": "What happens if a talking head shot runs for 6 seconds without any cut, zoom, or B-roll?",
+            "options": [
+              "Viewer attention drifts and pacing feels sluggish",
+              "It automatically makes the speaker look smarter",
+              "The audio bitrate drops",
+              "Nothing, 6 seconds is standard for fast-paced shorts"
+            ],
+            "correct": 0,
+            "explanation": "Visual monotony causes attention drop-off. Fast modern edits introduce a cut, punch zoom, or B-roll every 2–4 seconds."
+          },
+          "practice_id": "pacing-01-practice"
+        },
+        {
+          "id": "pacing-02",
+          "title": "Rhythm & Changing Pace",
+          "duration": "7 min",
+          "difficulty": "Intermediate",
+          "skill": "pacing",
+          "concept": "Pacing isn't just cutting fast all the time; it's about contrast. Fast sections create excitement; slower beats let key points land.",
+          "why": "Monotonous speed (even fast speed) becomes numb without rhythmic breathing room.",
+          "bad_example": "Every single cut is exactly 1.0 second from start to finish like a metronome.",
+          "good_example": "Quick sequence of 1.2s cuts building tension, followed by a 3.0s breath before the climax.",
+          "quiz": {
+            "question": "Why is varying shot duration better than making every cut exactly 1.0 second?",
+            "options": [
+              "It saves hard drive space",
+              "It creates musical rhythm and prevents visual numbness",
+              "DaVinci Resolve requires uneven cuts",
+              "It allows higher frame rates"
+            ],
+            "correct": 1,
+            "explanation": "Dynamic variety keeps viewers engaged by creating rhythm and emotional contrast."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-03",
+      "number": 3,
+      "title": "Story & Sequence",
+      "description": "Setup, conflict, progression, payoff, shot ordering, and information hierarchy.",
+      "icon": "book-open",
+      "lessons": [
+        {
+          "id": "story-01",
+          "title": "Information Hierarchy & Setup",
+          "duration": "6 min",
+          "difficulty": "Beginner",
+          "skill": "story",
+          "concept": "Every edit tells a story. Order your shots so the viewer always understands what is happening before diving into details.",
+          "why": "Showing the solution before the problem kills curiosity.",
+          "bad_example": "Starting with random footage before explaining the premise.",
+          "good_example": "Immediate context setup in 0-3s, followed by clear progression.",
+          "quiz": {
+            "question": "What is the primary role of the first 3 seconds in sequence storytelling?",
+            "options": [
+              "Display copyright notices",
+              "Establish context and spark curiosity (Setup)",
+              "Play loud dubstep music",
+              "Fade in from black slowly"
+            ],
+            "correct": 1,
+            "explanation": "The setup establishes the stakes and hooks the viewer into caring about what follows."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-04",
+      "number": 4,
+      "title": "B-roll",
+      "description": "Why use B-roll, cover jump cuts, explain ideas visually, and create attention resets.",
+      "icon": "layers",
+      "lessons": [
+        {
+          "id": "broll-01",
+          "title": "Show Instead of Tell",
+          "duration": "5 min",
+          "difficulty": "Beginner",
+          "skill": "broll",
+          "concept": "Whenever the speaker describes an action, object, or feeling, show B-roll to reinforce the words visually.",
+          "why": "Visuals complement auditory memory and keep the viewer visually stimulated.",
+          "bad_example": "Speaker talks about editing software while only showing their face for 10 seconds.",
+          "good_example": "Cut to screen recording of the timeline precisely as the speaker mentions the tool.",
+          "quiz": {
+            "question": "When should B-roll appear over talking head dialogue?",
+            "options": [
+              "Only at the end credits",
+              "Right as the speaker introduces the concept to illustrate it and reset visual attention",
+              "Never, talking heads should never be covered",
+              "Whenever the audio is muted"
+            ],
+            "correct": 1,
+            "explanation": "B-roll shows what is being told and resets viewer attention."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-05",
+      "number": 5,
+      "title": "Audio & Transitions",
+      "description": "Dialogue leveling, SFX, music ducking, silence, J-Cuts, and L-Cuts.",
+      "icon": "volume-2",
+      "lessons": [
+        {
+          "id": "audio-01",
+          "title": "The Power of the J-Cut",
+          "duration": "6 min",
+          "difficulty": "Intermediate",
+          "skill": "audio",
+          "concept": "A J-Cut occurs when the audio of the next scene starts before the visual cut occurs.",
+          "why": "J-Cuts feel natural to human ears because in real life, we often hear something before we turn our eyes to look at it.",
+          "bad_example": "Hard audio and video cuts happening simultaneously on every single shot.",
+          "good_example": "Audio begins 0.4s ahead of the incoming B-roll clip.",
+          "quiz": {
+            "question": "What defines a J-Cut in video editing?",
+            "options": [
+              "Audio from the next clip starts before the video changes",
+              "Video changes before the audio starts",
+              "Cutting the video shaped like the letter J",
+              "Muting the left channel"
+            ],
+            "correct": 0,
+            "explanation": "In a J-Cut, audio leads the visual transition, making cuts feel smoother and more immersive."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-06",
+      "number": 6,
+      "title": "Text & Caption",
+      "description": "Caption timing, keyword emphasis, visual hierarchy, and readability.",
+      "icon": "type",
+      "lessons": [
+        {
+          "id": "text-01",
+          "title": "Keyword Emphasis & Reading Speed",
+          "duration": "5 min",
+          "difficulty": "Beginner",
+          "skill": "text",
+          "concept": "Captions shouldn't just transcribe; they should guide the eye. Highlight 1–2 power words per sentence.",
+          "why": "Wall-of-text captions overwhelm the brain; synchronized word chunks enhance comprehension.",
+          "bad_example": "A 4-line paragraph appearing all at once for 1.5 seconds.",
+          "good_example": "1–3 words per line, timed exactly to the spoken syllables.",
+          "quiz": {
+            "question": "Why is highlighting key words in captions beneficial?",
+            "options": [
+              "It increases file size",
+              "It directs visual attention to critical insights quickly",
+              "It replaces the need for video",
+              "It bypasses copyright filters"
+            ],
+            "correct": 1,
+            "explanation": "Keyword highlights guide the viewer's eye and reinforce the speaker's emphasis."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-07",
+      "number": 7,
+      "title": "Motion",
+      "description": "Punch zooms, scale keyframes, position shifts, and motion emphasis.",
+      "icon": "move",
+      "lessons": [
+        {
+          "id": "motion-01",
+          "title": "Punch Zoom for Emphasis",
+          "duration": "5 min",
+          "difficulty": "Beginner",
+          "skill": "motion",
+          "concept": "A punch zoom (scaling from 100% to 115–120%) acts as an instant visual punch to underline a punchline or crucial statement.",
+          "why": "It simulates a multi-camera setup with a single camera angle and breaks visual stillness.",
+          "bad_example": "Zooming randomly every 2 seconds without correlation to speech importance.",
+          "good_example": "Punching in right on the climax word or surprising realization.",
+          "quiz": {
+            "question": "What is the optimal use of a punch zoom in talking head videos?",
+            "options": [
+              "Continuous zooming in and out non-stop",
+              "To visually underline a key insight, punchline, or emotional pivot",
+              "Only when the camera battery is low",
+              "To hide out-of-focus background details"
+            ],
+            "correct": 1,
+            "explanation": "Punch zooms serve to emphasize crucial words or emotional turns."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-08",
+      "number": 8,
+      "title": "Hook & Retention",
+      "description": "First 1–3 seconds, curiosity gaps, pattern interrupts, and open loops.",
+      "icon": "anchor",
+      "lessons": [
+        {
+          "id": "hook-01",
+          "title": "The First 3 Seconds",
+          "duration": "6 min",
+          "difficulty": "Intermediate",
+          "skill": "hook",
+          "concept": "The first 3 seconds determine whether a viewer stays or scrolls away. No logos, no slow intros, no greeting.",
+          "why": "Viewers decide in under 2 seconds if a video is relevant to their interests.",
+          "bad_example": "'Hey guys, welcome back to my channel! Today we are going to talk about...'",
+          "good_example": "'This single edit cut my render times in half—here is why.' (Instant visual hook).",
+          "quiz": {
+            "question": "What should be eliminated from the first 2 seconds of a video?",
+            "options": [
+              "The audio track",
+              "Generic greetings, channel intros, and dead air before speech starts",
+              "The video colors",
+              "The primary subject"
+            ],
+            "correct": 1,
+            "explanation": "Jump straight into the core promise or intrigue without throat-clearing introductions."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-09",
+      "number": 9,
+      "title": "Color & Visual Consistency",
+      "description": "Exposure, contrast, white balance, shot matching, and basic color looks.",
+      "icon": "sun",
+      "lessons": [
+        {
+          "id": "color-01",
+          "title": "Shot Matching & Exposure",
+          "duration": "6 min",
+          "difficulty": "Intermediate",
+          "skill": "color",
+          "concept": "Before grading for style, balance shots so skin tones and luminance match across cuts.",
+          "why": "Jarring brightness shifts between A-roll and B-roll distract viewers from the content.",
+          "bad_example": "Cutting from a warm bright shot to an underexposed green-tinted shot.",
+          "good_example": "Matched skin tones and consistent contrast levels throughout the sequence.",
+          "quiz": {
+            "question": "What is the first step in color correction before applying creative LUTs?",
+            "options": [
+              "Maximum saturation",
+              "Normalizing exposure, white balance, and contrast matching across shots",
+              "Inverting colors",
+              "Adding film grain"
+            ],
+            "correct": 1,
+            "explanation": "Ensuring baseline consistency between clips is essential before applying stylistic grades."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mod-10",
+      "number": 10,
+      "title": "Complete Edit",
+      "description": "Synthesizing Hook, Dialogue, B-roll, Music, SFX, Captions, and Pacing into a finished 30-60s short.",
+      "icon": "award",
+      "lessons": [
+        {
+          "id": "complete-01",
+          "title": "The 60-Second Master Edit",
+          "duration": "10 min",
+          "difficulty": "Advanced",
+          "skill": "overall",
+          "concept": "Bring all 9 skills together: sharp hook, tight pacing, crisp audio transitions, well-placed B-roll, and clean caption hierarchy.",
+          "why": "A great video editor harmonizes every layer into a single effortless viewer experience.",
+          "bad_example": "Great cuts but muddy audio and a weak hook that loses 80% of viewers in 2 seconds.",
+          "good_example": "A cohesive 45s short with high energy, clean sound design, and clear narrative payoff.",
+          "quiz": {
+            "question": "What distinguishes an advanced edit from a beginner edit?",
+            "options": [
+              "Using as many 3D transitions as possible",
+              "Seamless harmony between sound, visual pacing, story momentum, and intentional cut timing",
+              "Making the video as long as possible",
+              "Using 10 different fonts"
+            ],
+            "correct": 1,
+            "explanation": "Mastery is intentional synergy where every cut and sound serves the emotional story."
+          }
+        }
+      ]
+    }
+  ]
+}
