@@ -13,6 +13,7 @@ import {
   HelpCircle,
   AudioLines,
   Languages,
+  Laptop,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -24,6 +25,7 @@ export default function Sidebar() {
     { label: t("nav_overview"), href: "/", icon: Home },
     { label: t("nav_learn"), href: "/learn", icon: BookOpen },
     { label: t("nav_practice"), href: "/practice/pacing-01-practice", icon: Target },
+    { label: t("nav_guides"), href: "/guides", icon: Laptop },
     { label: t("nav_skills"), href: "/skills", icon: BarChart2 },
     { label: t("nav_settings"), href: "/settings", icon: Sliders },
   ];

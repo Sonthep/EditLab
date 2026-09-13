@@ -20,6 +20,8 @@ import {
   ChevronDown,
   ListFilter,
   Check,
+  ChevronRight,
+  Laptop,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { EXERCISE_TRANSLATIONS_TH } from "@/lib/curriculumTranslations";
@@ -94,6 +96,7 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [folderNotice, setFolderNotice] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<"raw" | "sample">("raw");
+  const [selectedSoftware, setSelectedSoftware] = useState<"davinci" | "capcut">("davinci");
 
   useEffect(() => {
     // Fetch exercise detail
@@ -493,39 +496,109 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: DaVinci Guide + Target Metrics */}
         <div className="lg:col-span-6 space-y-6">
-          {/* DaVinci Workflow */}
+          {/* Software Workflow Guide (DaVinci 19 & CapCut Desktop) */}
           <div className="p-6 rounded-2xl bg-white border border-[#e5ede7] space-y-4 shadow-xs">
-            <h3 className="text-xs font-bold text-[#141f19] uppercase tracking-wider flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#2e7354]" />
-              <span>{t("davinci_workflow_title")}</span>
-            </h3>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[#f0f4f1]">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#2e7354]" />
+                <span className="text-xs font-bold text-[#141f19] uppercase tracking-wider">
+                  {selectedSoftware === "davinci" ? t("davinci_workflow_title") : t("capcut_workflow_title")}
+                </span>
+              </div>
+              <div className="inline-flex rounded-lg bg-[#f0f5f2] p-0.5 border border-[#e0eae3]">
+                <button
+                  type="button"
+                  onClick={() => setSelectedSoftware("davinci")}
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition cursor-pointer ${
+                    selectedSoftware === "davinci"
+                      ? "bg-white text-[#163324] shadow-xs"
+                      : "text-[#5e6d64] hover:text-[#141f19]"
+                  }`}
+                >
+                  DaVinci 19
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedSoftware("capcut")}
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition cursor-pointer ${
+                    selectedSoftware === "capcut"
+                      ? "bg-white text-[#163324] shadow-xs"
+                      : "text-[#5e6d64] hover:text-[#141f19]"
+                  }`}
+                >
+                  CapCut Desktop
+                </button>
+              </div>
+            </div>
 
-            <ol className="space-y-3 text-xs text-[#4b5563]">
-              <li className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
-                  1
-                </span>
-                <span>{t("step_1")}</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
-                  2
-                </span>
-                <span>{t("step_2")}</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
-                  3
-                </span>
-                <span>{t("step_3")}</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
-                  4
-                </span>
-                <span>{t("step_4")}</span>
-              </li>
-            </ol>
+            {selectedSoftware === "davinci" ? (
+              <ol className="space-y-3 text-xs text-[#4b5563]">
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    1
+                  </span>
+                  <span>{t("step_1")}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    2
+                  </span>
+                  <span>{t("step_2")}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    3
+                  </span>
+                  <span>{t("step_3")}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    4
+                  </span>
+                  <span>{t("step_4")}</span>
+                </li>
+              </ol>
+            ) : (
+              <ol className="space-y-3 text-xs text-[#4b5563]">
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    1
+                  </span>
+                  <span>{t("capcut_step_1")}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    2
+                  </span>
+                  <span>{t("capcut_step_2")}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    3
+                  </span>
+                  <span>{t("capcut_step_3")}</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="w-5 h-5 rounded-full bg-[#eef6f1] text-[#163324] flex items-center justify-center font-mono font-bold shrink-0">
+                    4
+                  </span>
+                  <span>{t("capcut_step_4")}</span>
+                </li>
+              </ol>
+            )}
+
+            <div className="pt-2 border-t border-[#f0f4f1] flex items-center justify-between">
+              <span className="text-[11px] text-[#718278]">
+                {selectedSoftware === "davinci" ? "DaVinci Resolve 19 (Free/Studio)" : "CapCut Desktop v4+"}
+              </span>
+              <Link
+                href={`/guides?software=${selectedSoftware}`}
+                className="inline-flex items-center gap-1.5 text-xs text-[#2e7354] hover:text-[#163324] font-semibold transition"
+              >
+                <span>{t("btn_view_full_guide")}</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
 
           {/* Checklist */}
