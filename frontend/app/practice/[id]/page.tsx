@@ -11,6 +11,12 @@ import {
   Square,
   Sparkles,
   AlertTriangle,
+  Download,
+  ExternalLink,
+  Film,
+  PlayCircle,
+  Eye,
+  Info,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -24,6 +30,15 @@ interface TargetMetrics {
   max_silence_gap?: number;
 }
 
+interface ExternalSource {
+  name: string;
+  name_th: string;
+  url: string;
+  category: string;
+  description: string;
+  description_th: string;
+}
+
 interface ExerciseData {
   id: string;
   lesson_id: string;
@@ -33,8 +48,13 @@ interface ExerciseData {
   folder_path: string;
   raw_footage_path: string;
   sample_solution_path: string;
+  raw_footage_filename?: string;
   raw_footage_exists: boolean;
   sample_solution_exists: boolean;
+  download_raw_url?: string;
+  download_sample_url?: string;
+  stream_raw_url?: string;
+  external_sources?: ExternalSource[];
   target_metrics: TargetMetrics;
   checklist: string[];
 }
@@ -53,6 +73,7 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
   const [analyzing, setAnalyzing] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [folderNotice, setFolderNotice] = useState<string | null>(null);
+  const [previewMode, setPreviewMode] = useState<"raw" | "sample">("raw");
 
   useEffect(() => {
     fetch(`/api/practice/${exerciseId}`)
@@ -159,8 +180,12 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
     "รักษาความชัดเจนและความต่อเนื่องของบทสนทนาอย่างเป็นธรรมชาติ"
   ] : exercise.checklist;
 
+  const streamRawUrl = `/api/media/stream?path=practice/${exerciseId}/raw_footage.mp4`;
+  const streamSampleUrl = `/api/media/stream?path=practice/${exerciseId}/sample_edited.mp4`;
+  const activeStreamUrl = previewMode === "raw" ? streamRawUrl : streamSampleUrl;
+
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-12">
+    <div className="max-w-5xl mx-auto space-y-8 pb-16">
       {/* Title Header Card */}
       <div className="p-7 rounded-2xl bg-white border border-[#e5ede7] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -178,7 +203,16 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
           </p>
         </div>
 
-        <div className="flex flex-col gap-1.5 shrink-0">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
+          <a
+            href={`/api/practice/${exerciseId}/download-raw`}
+            download
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#163324] hover:bg-[#1e4230] text-white text-xs font-bold transition shadow-xs cursor-pointer"
+          >
+            <Download className="w-4 h-4 text-[#7dd3a6]" />
+            <span>{t("btn_download_raw")}</span>
+          </a>
+
           <button
             onClick={handleOpenFolder}
             className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-[#f6faf7] text-[#141f19] text-xs font-semibold border border-[#dce5df] transition shadow-xs cursor-pointer"
@@ -186,12 +220,182 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
             <FolderOpen className="w-4 h-4 text-[#2e7354]" />
             <span>{t("btn_open_folder")}</span>
           </button>
-          {folderNotice && (
-            <span className="text-[11px] text-[#1b5e3a] text-center font-mono">{folderNotice}</span>
-          )}
         </div>
       </div>
 
+      {folderNotice && (
+        <div className="p-3 rounded-xl bg-[#eef6f1] border border-[#cce8d7] text-[#163324] text-xs font-medium flex items-center justify-between">
+          <span>{folderNotice}</span>
+          <span className="text-[10px] font-mono text-[#2e7354]">{exercise.folder_path}</span>
+        </div>
+      )}
+
+      {/* SECTION 1: Practice Assets & Source Footage Preview (HIGHLIGHTED) */}
+      <div className="p-7 rounded-2xl bg-white border border-[#e5ede7] shadow-xs space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e5ede7] pb-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <Film className="w-4 h-4 text-[#2e7354]" />
+              <h2 className="text-base font-bold text-[#141f19]">{t("practice_assets_title")}</h2>
+            </div>
+            <p className="text-xs text-[#5e6d64] mt-0.5">{t("practice_assets_sub")}</p>
+          </div>
+
+          {/* Toggle Raw vs Sample */}
+          <div className="inline-flex rounded-xl bg-[#f0f5f2] p-1 border border-[#dce5df]">
+            <button
+              onClick={() => setPreviewMode("raw")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                previewMode === "raw"
+                  ? "bg-white text-[#163324] shadow-xs font-bold"
+                  : "text-[#5e6d64] hover:text-[#141f19]"
+              }`}
+            >
+              <PlayCircle className="w-3.5 h-3.5" />
+              <span>{language === "th" ? "วิดีโอดิบ (Raw 40s)" : "Raw Footage (40s)"}</span>
+            </button>
+            <button
+              onClick={() => setPreviewMode("sample")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 ${
+                previewMode === "sample"
+                  ? "bg-white text-[#163324] shadow-xs font-bold"
+                  : "text-[#5e6d64] hover:text-[#141f19]"
+              }`}
+            >
+              <Eye className="w-3.5 h-3.5" />
+              <span>{language === "th" ? "วิดีโอตัวอย่างตัดเสร็จ (24s)" : "Sample Edit (24s)"}</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Video Player */}
+          <div className="lg:col-span-7 space-y-3">
+            <div className="relative aspect-video rounded-xl bg-[#0e1612] overflow-hidden border border-[#1b2b23] shadow-md group">
+              <video
+                key={activeStreamUrl}
+                src={activeStreamUrl}
+                controls
+                preload="metadata"
+                className="w-full h-full object-contain"
+              />
+              <div className="absolute top-2.5 left-2.5 pointer-events-none">
+                <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wide uppercase bg-black/70 text-white backdrop-blur-xs border border-white/10">
+                  {previewMode === "raw" ? t("raw_preview_badge") : "BENCHMARK SAMPLE SOLUTION (24s)"}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-[#718278] font-mono px-1">
+              <span>{previewMode === "raw" ? "raw_footage.mp4 (1080p • 25fps • AAC)" : "sample_edited.mp4 (1080p • 7 cuts)"}</span>
+              <span>{previewMode === "raw" ? "~40 seconds" : "~24 seconds"}</span>
+            </div>
+          </div>
+
+          {/* Quick Actions & Specs */}
+          <div className="lg:col-span-5 space-y-4">
+            <div className="p-4 rounded-xl bg-[#f8faf8] border border-[#e5ede7] space-y-3">
+              <div className="text-xs font-bold text-[#141f19] uppercase tracking-wider flex items-center gap-1.5">
+                <Info className="w-3.5 h-3.5 text-[#2e7354]" />
+                <span>{language === "th" ? "ข้อมูลไฟล์ Source" : "File Specifications"}</span>
+              </div>
+              <ul className="text-xs text-[#4b5563] space-y-2 font-mono">
+                <li className="flex justify-between">
+                  <span className="text-[#718278]">{language === "th" ? "ชื่อไฟล์:" : "Filename:"}</span>
+                  <span className="font-semibold text-[#141f19]">raw_footage.mp4</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-[#718278]">{language === "th" ? "ความยาวต้นฉบับ:" : "Original Length:"}</span>
+                  <span className="font-semibold text-[#141f19]">40.0 วินาที</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-[#718278]">{language === "th" ? "โจทย์ความยาว:" : "Target Length:"}</span>
+                  <span className="font-semibold text-[#2e7354]">20.0 – 30.0 วินาที</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-[#718278]">{language === "th" ? "รูปแบบ:" : "Format:"}</span>
+                  <span className="font-semibold text-[#141f19]">MP4 (H.264 / AAC)</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Direct Downloads */}
+            <div className="space-y-2">
+              <a
+                href={`/api/practice/${exerciseId}/download-raw`}
+                download
+                className="w-full flex items-center justify-between p-3.5 rounded-xl bg-[#eef6f1] hover:bg-[#e1f0e6] border border-[#cce8d7] text-[#163324] transition text-xs font-bold cursor-pointer shadow-xs"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Download className="w-4 h-4 text-[#2e7354]" />
+                  <span>{t("btn_download_raw")}</span>
+                </div>
+                <span className="text-[10px] font-mono text-[#2e7354] uppercase bg-white px-2 py-0.5 rounded-md border border-[#cce8d7]">
+                  ~375 KB
+                </span>
+              </a>
+
+              <a
+                href={`/api/practice/${exerciseId}/download-sample`}
+                download
+                className="w-full flex items-center justify-between p-3.5 rounded-xl bg-white hover:bg-[#f6faf7] border border-[#dce5df] text-[#374151] transition text-xs font-medium cursor-pointer shadow-xs"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Download className="w-4 h-4 text-[#718278]" />
+                  <span>{t("btn_download_sample")}</span>
+                </div>
+                <span className="text-[10px] font-mono text-[#718278] uppercase bg-[#f0f5f2] px-2 py-0.5 rounded-md">
+                  ~250 KB
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Curated External Sources Section */}
+        {exercise.external_sources && exercise.external_sources.length > 0 && (
+          <div className="pt-4 border-t border-[#e5ede7] space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xs font-bold text-[#141f19] uppercase tracking-wider">
+                  {t("external_sources_title")}
+                </h3>
+                <p className="text-[11px] text-[#718278]">{t("external_sources_sub")}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {exercise.external_sources.map((src, idx) => (
+                <a
+                  key={idx}
+                  href={src.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3.5 rounded-xl bg-[#fafbfa] hover:bg-[#f3f7f4] border border-[#e5ede7] hover:border-[#cbdad0] transition flex flex-col justify-between space-y-2 group cursor-pointer"
+                >
+                  <div>
+                    <span className="text-[10px] font-mono font-semibold text-[#2e7354] uppercase block">
+                      {src.category}
+                    </span>
+                    <h4 className="text-xs font-bold text-[#141f19] group-hover:text-[#2e7354] transition mt-0.5 line-clamp-1">
+                      {language === "th" ? src.name_th : src.name}
+                    </h4>
+                    <p className="text-[11px] text-[#5e6d64] line-clamp-2 mt-1 leading-relaxed">
+                      {language === "th" ? src.description_th : src.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1 text-[11px] text-[#2e7354] font-semibold pt-1">
+                    <span>{t("open_external")}</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* SECTION 2: Workflow & Submission */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: DaVinci Guide + Target Metrics */}
         <div className="lg:col-span-6 space-y-6">

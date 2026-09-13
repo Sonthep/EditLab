@@ -11,6 +11,8 @@ import {
   Clock,
   Lightbulb,
   ChevronRight,
+  Film,
+  Download,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { LESSON_TRANSLATIONS_TH } from "@/lib/curriculumTranslations";
@@ -305,6 +307,42 @@ export default function LessonDetailPage({ params }: { params: Promise<{ id: str
           )}
         </div>
       )}
+
+      {/* Attached Practice Source & Footage Card */}
+      <div className="p-6 rounded-2xl bg-white border border-[#cce8d7] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-start gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-[#eef6f1] text-[#163324] flex items-center justify-center shrink-0 mt-0.5">
+            <Film className="w-5 h-5 text-[#2e7354]" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-[#dcf2e3] text-[#144d2d]">
+                {language === "th" ? "ไฟล์ Source แนบพร้อม" : "SOURCE ATTACHED"}
+              </span>
+              <span className="text-xs text-[#718278] font-mono">raw_footage.mp4 (40s)</span>
+            </div>
+            <h4 className="text-sm font-bold text-[#141f19]">
+              {language === "th" ? "วิดีโอดิบสำหรับฝึกตัดต่อใน DaVinci / Premiere" : "Raw Practice Footage for DaVinci / Premiere"}
+            </h4>
+            <p className="text-xs text-[#5e6d64] mt-0.5 max-w-xl">
+              {language === "th"
+                ? "ฟุตเทจดิบคนพูดที่มี dead air และจังหวะหยุดพูดให้คุณนำไปฝึกตัดแต่งและคุมเพซซิ่งได้ทันที"
+                : "Unedited talking head clip with dead air gaps ready for you to cut and tighten."}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <a
+            href={`/api/practice/${practiceId}/download-raw`}
+            download
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#f0f5f2] hover:bg-[#e2ebe4] text-[#163324] text-xs font-bold transition cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5 text-[#2e7354]" />
+            <span>{language === "th" ? "ดาวน์โหลด Source" : "Download MP4"}</span>
+          </a>
+        </div>
+      </div>
 
       {/* CTA: Next Action */}
       <div className="p-8 rounded-2xl bg-[#163324] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-sm">
