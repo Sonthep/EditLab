@@ -27,7 +27,8 @@
             ],
             "correct": 1,
             "explanation": "Cutting right as the thought completes preserves meaning while maintaining conversational momentum."
-          }
+          },
+          "practice_id": "timing-01-practice"
         }
       ]
     },
@@ -81,7 +82,8 @@
             ],
             "correct": 1,
             "explanation": "Dynamic variety keeps viewers engaged by creating rhythm and emotional contrast."
-          }
+          },
+          "practice_id": "pacing-01-practice"
         }
       ]
     },
@@ -112,7 +114,8 @@
             ],
             "correct": 1,
             "explanation": "The setup establishes the stakes and hooks the viewer into caring about what follows."
-          }
+          },
+          "practice_id": "story-01-practice"
         }
       ]
     },
@@ -143,7 +146,8 @@
             ],
             "correct": 1,
             "explanation": "B-roll shows what is being told and resets viewer attention."
-          }
+          },
+          "practice_id": "broll-01-practice"
         }
       ]
     },
@@ -174,7 +178,8 @@
             ],
             "correct": 0,
             "explanation": "In a J-Cut, audio leads the visual transition, making cuts feel smoother and more immersive."
-          }
+          },
+          "practice_id": "audio-01-practice"
         }
       ]
     },
@@ -205,7 +210,8 @@
             ],
             "correct": 1,
             "explanation": "Keyword highlights guide the viewer's eye and reinforce the speaker's emphasis."
-          }
+          },
+          "practice_id": "text-01-practice"
         }
       ]
     },
@@ -236,7 +242,8 @@
             ],
             "correct": 1,
             "explanation": "Punch zooms serve to emphasize crucial words or emotional turns."
-          }
+          },
+          "practice_id": "motion-01-practice"
         }
       ]
     },
@@ -267,7 +274,8 @@
             ],
             "correct": 1,
             "explanation": "Jump straight into the core promise or intrigue without throat-clearing introductions."
-          }
+          },
+          "practice_id": "hook-01-practice"
         }
       ]
     },
@@ -298,7 +306,8 @@
             ],
             "correct": 1,
             "explanation": "Ensuring baseline consistency between clips is essential before applying stylistic grades."
-          }
+          },
+          "practice_id": "color-01-practice"
         }
       ]
     },
@@ -329,7 +338,8 @@
             ],
             "correct": 1,
             "explanation": "Mastery is intentional synergy where every cut and sound serves the emotional story."
-          }
+          },
+          "practice_id": "complete-01-practice"
         }
       ]
     }
