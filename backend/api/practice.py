@@ -30,6 +30,14 @@ CURATED_SOURCES = [
         "description_th": "คลิปภาพตัดแทรก B-roll สวยๆ คมชัด ใช้แทรกคั่นคำพูดและซ่อนรอยต่อช็อต"
     },
     {
+        "name": "MyInstants Thai Trending SFX & Soundboard",
+        "name_th": "MyInstants: คลังเสียงมีมและซาวด์เอฟเฟกต์ยอดฮิตไทย (SFX / Soundboard)",
+        "url": "https://www.myinstants.com/en/index/th/",
+        "category": "Meme SFX & Soundboard",
+        "description": "Trending Thai comedy sound effects, punchline stingers, meme sounds, and alert SFX for engaging video editing.",
+        "description_th": "รวมเสียงซาวด์เอฟเฟกต์มีมไทยยอดนิยม เสียงตบมุก ตึ่งโป๊ะ เป๊ง แป่ว และเสียงช็อตฟีล สำหรับเพิ่มความสนุกให้คลิป"
+    },
+    {
         "name": "Pixabay SFX (Whoosh, Pop, Swoosh)",
         "name_th": "Pixabay: ซาวด์เอฟเฟกต์ (SFX) ตัดต่อฟรี",
         "url": "https://pixabay.com/sound-effects/search/whoosh/",
@@ -76,6 +84,14 @@ TOPIC_SOURCES = {
     ],
     "audio": [
         {
+            "name": "MyInstants Thai Trending SFX & Meme Sounds",
+            "name_th": "MyInstants: เสียงเอฟเฟกต์มีมไทย & Soundboard ตบมุกยอดฮิต",
+            "url": "https://www.myinstants.com/en/index/th/",
+            "category": "Meme & Reaction SFX",
+            "description": "Massive soundboard of trending Thai reaction sounds, punchline hits, and meme effects.",
+            "description_th": "คลังเสียงตบมุก แป่ว เป๊ง ตึ่งโป๊ะ และมีมสุดฮิตสำหรับงานตัดต่อสไตล์ไทยและ Short-form"
+        },
+        {
             "name": "Pixabay Sound Effects (Whoosh & Transitions)",
             "name_th": "Pixabay: ซาวด์เอฟเฟกต์ (SFX) และเสียง Whoosh ฟรี",
             "url": "https://pixabay.com/sound-effects/search/whoosh/",
@@ -102,6 +118,14 @@ TOPIC_SOURCES = {
     ],
     "motion": [
         {
+            "name": "MyInstants Punchline & Pop SFX",
+            "name_th": "MyInstants: ซาวด์เอฟเฟกต์เน้นจังหวะฮาและ Punchline",
+            "url": "https://www.myinstants.com/en/index/th/",
+            "category": "Punchline SFX",
+            "description": "Snappy comedic and meme sound effects paired with punch zooms and motion emphasis.",
+            "description_th": "เสียงเน้นจังหวะคำพูดและ Punch Zoom สไตล์ครีเอเตอร์สายสนุก"
+        },
+        {
             "name": "Pixabay Dynamic Whooshes & Pops",
             "name_th": "Pixabay: เสียง Whoosh & Pop เสริมจังหวะ Punch Zoom",
             "url": "https://pixabay.com/sound-effects/search/pop/",
@@ -119,6 +143,14 @@ TOPIC_SOURCES = {
         }
     ],
     "hook": [
+        {
+            "name": "MyInstants Stinger & Reaction Sounds",
+            "name_th": "MyInstants: เสียงเปิดหัวคลิป & ซาวด์ช็อตฟีลดึงดูดสายตา",
+            "url": "https://www.myinstants.com/en/index/th/",
+            "category": "Pattern Interrupt SFX",
+            "description": "Soundboard effects and punchy stingers to hook viewers in the first 3 seconds.",
+            "description_th": "เสียงเอฟเฟกต์ช็อตฟีลและเสียงเปิดหัว ช่วยดึงความสนใจคนดูใน 3 วินาทีแรก"
+        },
         {
             "name": "Pexels High Energy Opening Hooks",
             "name_th": "Pexels: ฟุตเทจช็อตเปิดตัวสร้างความตื่นเต้น",

@@ -706,6 +706,137 @@ export default function SoftwareGuidesPage() {
         </div>
       )}
 
+      {/* Recommended Free Assets & SFX Libraries */}
+      <div className="p-7 rounded-2xl bg-white border border-[#e5ede7] shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#e5ede7] pb-3">
+          <div className="flex items-center gap-2">
+            <Volume2 className="w-4 h-4 text-[#2e7354]" />
+            <h3 className="text-sm font-bold text-[#141f19]">
+              {language === "th"
+                ? "คลังซาวด์เอฟเฟกต์ & ฟุตเทจฟรีแนะนำสำหรับฝึกตัดต่อ"
+                : "Curated Free Sound Effects & Stock Resources"}
+            </h3>
+          </div>
+          <span className="text-[11px] text-[#718278] font-mono">
+            {language === "th" ? "คลังเสียงและฟุตเทจปลอดลิขสิทธิ์" : "Royalty-free & Creative Commons"}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* MyInstants Thailand */}
+          <a
+            href="https://www.myinstants.com/en/index/th/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3.5 rounded-xl bg-[#fafbfa] hover:bg-[#f3f7f4] border border-[#e5ede7] hover:border-[#cbdad0] transition flex flex-col justify-between space-y-2 group cursor-pointer"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono font-semibold text-[#2e7354] uppercase">
+                  Meme SFX & Soundboard
+                </span>
+                <ExternalLink className="w-3 h-3 text-[#718278] group-hover:text-[#2e7354] transition" />
+              </div>
+              <h4 className="text-xs font-bold text-[#141f19] group-hover:text-[#2e7354] transition mt-1 line-clamp-1">
+                {language === "th" ? "MyInstants: ซาวด์มีมไทย & ตบมุก" : "MyInstants: Thai SFX Soundboard"}
+              </h4>
+              <p className="text-[11px] text-[#5e6d64] line-clamp-2 mt-1 leading-relaxed">
+                {language === "th"
+                  ? "คลังเสียงตบมุก แป่ว เป๊ง ตึ่งโป๊ะ เสียงช็อตฟีล และมีมสุดฮิตสำหรับงานตัดต่อสไตล์สนุกสนาน"
+                  : "Trending comedy sound effects, punchline stingers, meme sounds, and alert SFX."}
+              </p>
+            </div>
+            <span className="text-[10px] font-mono text-[#2e7354] flex items-center gap-1 font-semibold">
+              myinstants.com/en/index/th/ ↗
+            </span>
+          </a>
+
+          {/* Pixabay SFX */}
+          <a
+            href="https://pixabay.com/sound-effects/search/whoosh/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3.5 rounded-xl bg-[#fafbfa] hover:bg-[#f3f7f4] border border-[#e5ede7] hover:border-[#cbdad0] transition flex flex-col justify-between space-y-2 group cursor-pointer"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono font-semibold text-[#2e7354] uppercase">
+                  Transitions & Cuts
+                </span>
+                <ExternalLink className="w-3 h-3 text-[#718278] group-hover:text-[#2e7354] transition" />
+              </div>
+              <h4 className="text-xs font-bold text-[#141f19] group-hover:text-[#2e7354] transition mt-1 line-clamp-1">
+                {language === "th" ? "Pixabay: เสียง Whoosh & Pop" : "Pixabay: Whoosh & Pop SFX"}
+              </h4>
+              <p className="text-[11px] text-[#5e6d64] line-clamp-2 mt-1 leading-relaxed">
+                {language === "th"
+                  ? "เสียง Whoosh, Swoosh, Pop เสริมจังหวะคัตและ Punch Zoom ให้น่าติดตาม"
+                  : "Essential swoosh, riser, and pop sound effects to emphasize cuts and punch zooms."}
+              </p>
+            </div>
+            <span className="text-[10px] font-mono text-[#2e7354] flex items-center gap-1 font-semibold">
+              pixabay.com ↗
+            </span>
+          </a>
+
+          {/* Mixkit B-Roll */}
+          <a
+            href="https://mixkit.co/free-stock-video/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3.5 rounded-xl bg-[#fafbfa] hover:bg-[#f3f7f4] border border-[#e5ede7] hover:border-[#cbdad0] transition flex flex-col justify-between space-y-2 group cursor-pointer"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono font-semibold text-[#2e7354] uppercase">
+                  B-Roll Cutaways
+                </span>
+                <ExternalLink className="w-3 h-3 text-[#718278] group-hover:text-[#2e7354] transition" />
+              </div>
+              <h4 className="text-xs font-bold text-[#141f19] group-hover:text-[#2e7354] transition mt-1 line-clamp-1">
+                {language === "th" ? "Mixkit: ภาพตัดแทรก B-Roll" : "Mixkit: Free B-Roll Videos"}
+              </h4>
+              <p className="text-[11px] text-[#5e6d64] line-clamp-2 mt-1 leading-relaxed">
+                {language === "th"
+                  ? "คลิปภาพคั่นฉากสวยๆ คมชัด ใช้แทรกคั่นคำพูดและซ่อนรอยต่อช็อต Jump Cut"
+                  : "Cinematic cutaways to insert over dialogue cuts and cover jump cuts seamlessly."}
+              </p>
+            </div>
+            <span className="text-[10px] font-mono text-[#2e7354] flex items-center gap-1 font-semibold">
+              mixkit.co ↗
+            </span>
+          </a>
+
+          {/* Pexels Video */}
+          <a
+            href="https://www.pexels.com/search/videos/talking%20head/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3.5 rounded-xl bg-[#fafbfa] hover:bg-[#f3f7f4] border border-[#e5ede7] hover:border-[#cbdad0] transition flex flex-col justify-between space-y-2 group cursor-pointer"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono font-semibold text-[#2e7354] uppercase">
+                  A-Roll Dialogue
+                </span>
+                <ExternalLink className="w-3 h-3 text-[#718278] group-hover:text-[#2e7354] transition" />
+              </div>
+              <h4 className="text-xs font-bold text-[#141f19] group-hover:text-[#2e7354] transition mt-1 line-clamp-1">
+                {language === "th" ? "Pexels: ฟุตเทจคนพูด 4K" : "Pexels: Talking Head 4K"}
+              </h4>
+              <p className="text-[11px] text-[#5e6d64] line-clamp-2 mt-1 leading-relaxed">
+                {language === "th"
+                  ? "คลิปคนพูดหน้ากล้องและบทสัมภาษณ์ความละเอียดสูง เหมาะสำหรับฝึกตัดบทสนทนา"
+                  : "High-resolution talking head video clips ideal for dialogue and pacing practice."}
+              </p>
+            </div>
+            <span className="text-[10px] font-mono text-[#2e7354] flex items-center gap-1 font-semibold">
+              pexels.com ↗
+            </span>
+          </a>
+        </div>
+      </div>
+
       {/* Common Pro Tips & Warnings */}
       <div className="p-6 rounded-2xl bg-[#fefce8] border border-[#fef08a] flex items-start gap-3.5 shadow-xs">
         <AlertCircle className="w-5 h-5 text-[#ca8a04] shrink-0 mt-0.5" />
