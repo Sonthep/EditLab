@@ -60,3 +60,35 @@ def test_synthetic_video_and_analysis():
     assert "pacing" in analysis.skills
     assert len(analysis.events) > 0
     assert len(analysis.strengths) > 0
+
+def test_settings_gemini_api():
+    # Verify GET /api/settings includes gemini_model
+    res = client.get("/api/settings")
+    assert res.status_code == 200
+    data = res.json()
+    assert "gemini_model" in data
+    assert "gemini" in data["gemini_model"]
+
+    # Verify POST /api/settings/test-gemini with invalid key
+    res_test = client.post("/api/settings/test-gemini", json={"gemini_api_key": "invalid_dummy_key", "gemini_model": "gemini-2.5-flash"})
+    assert res_test.status_code == 200
+    test_data = res_test.json()
+    assert test_data["status"] == "error"
+    assert "error" in test_data["message"].lower() or "not valid" in test_data["message"].lower()
+
+def test_gemini_provider_fallback():
+    from backend.services.ai.gemini_provider import GeminiAIProvider
+    # Instantiating with invalid/empty key triggers fallback safely
+    provider = GeminiAIProvider(api_key="", model="gemini-2.5-flash")
+    
+    # Generate a demo video for metrics
+    temp_dir = Path(__file__).resolve().parent.parent.parent / "data" / "cache" / "test"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    temp_video = temp_dir / "gemini_fallback_test.mp4"
+    created_path = FFmpegService.generate_demo_video(str(temp_video), duration=6.0, cuts=True)
+    
+    metrics = MetricsService.analyze_video(created_path, str(temp_dir))
+    analysis = provider.analyze_edit(created_path, metrics)
+    assert analysis.overall_score > 0
+    assert "pacing" in analysis.skills
+

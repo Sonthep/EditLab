@@ -1,0 +1,14 @@
+{
+  "name": "editlab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EditLab - AI Video Editing Coach",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:all": "powershell -ExecutionPolicy Bypass -File scripts/run.ps1",
+    "dev:backend": "powershell -ExecutionPolicy Bypass -Command \"$env:PYTHONPATH='.'; .\\backend\\.venv\\Scripts\\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload\"",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend start",
+    "test:backend": "powershell -ExecutionPolicy Bypass -Command \"$env:PYTHONPATH='.'; .\\backend\\.venv\\Scripts\\pytest.exe backend\\tests\\test_backend.py\""
+  }
+}

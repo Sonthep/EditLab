@@ -3,9 +3,11 @@ import json
 import uuid
 from pathlib import Path
 from typing import Optional, Dict, Any
+import os
 from backend.models.schemas import AnalysisResult, VideoMetrics
 from backend.services.video.metrics import MetricsService
 from backend.services.ai.local_rule_provider import LocalRuleBasedAIProvider
+from backend.services.ai.gemini_provider import GeminiAIProvider
 from backend.database.db import get_db_connection
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
@@ -14,6 +16,30 @@ THUMBNAIL_DIR = DATA_DIR / "thumbnails"
 class FeedbackService:
     def __init__(self):
         self.local_provider = LocalRuleBasedAIProvider()
+
+    def _get_provider(self):
+        provider_type = "local_rule"
+        gemini_key = os.getenv("GEMINI_API_KEY", "")
+        gemini_model = "gemini-2.5-flash"
+
+        try:
+            with get_db_connection() as conn:
+                cur = conn.cursor()
+                cur.execute("SELECT key, value FROM settings;")
+                for r in cur.fetchall():
+                    k, v = r["key"], r["value"]
+                    if k == "ai_provider":
+                        provider_type = v
+                    elif k == "gemini_api_key" and v:
+                        gemini_key = v
+                    elif k == "gemini_model" and v:
+                        gemini_model = v
+        except Exception:
+            pass
+
+        if (provider_type == "gemini" or not gemini_key) and provider_type == "gemini" and gemini_key:
+            return GeminiAIProvider(api_key=gemini_key, model=gemini_model)
+        return self.local_provider
 
     def analyze_submission(self, video_path: str, exercise_id: Optional[str] = None) -> AnalysisResult:
         """
@@ -38,7 +64,8 @@ class FeedbackService:
                     }
 
         # 3. AI / Rule Analysis
-        analysis = self.local_provider.analyze_edit(video_path, metrics, exercise_context)
+        provider = self._get_provider()
+        analysis = provider.analyze_edit(video_path, metrics, exercise_context)
         analysis_id = f"ana_{uuid.uuid4().hex[:12]}"
         analysis.id = analysis_id
 
