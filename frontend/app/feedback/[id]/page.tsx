@@ -13,8 +13,21 @@ import {
   ArrowRight,
   BarChart2,
   Activity,
+  Download,
+  Printer,
+  Share2,
+  Copy,
+  Check,
+  X,
+  Shield,
+  FileText,
+  ExternalLink,
+  HelpCircle,
+  Award,
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import SafeZoneOverlay, { SafeZoneMode, SafeZoneToolbar } from "@/components/SafeZoneOverlay";
+
 
 interface SceneSegment {
   index: number;
@@ -88,7 +101,35 @@ export default function FeedbackScreen({ params }: { params: Promise<{ id: strin
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeEventIndex, setActiveEventIndex] = useState<number | null>(null);
 
+  // New features: Safe Zone, Marker Export, Share Card
+  const [safeZoneMode, setSafeZoneMode] = useState<SafeZoneMode>("none");
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [copiedSummary, setCopiedSummary] = useState(false);
+  const [activeNleTab, setActiveNleTab] = useState<"davinci" | "premiere">("davinci");
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleCopySummary = () => {
+    if (!data) return;
+    const skillsText = Object.entries(data.skills)
+      .map(([k, v]) => `${k.toUpperCase()}: ${v}/100`)
+      .join(" • ");
+    const text = `🎬 EditLab Coaching Session #${data.id.slice(-6)}\n` +
+      `⭐ Overall Score: ${data.overall_score}/100\n` +
+      `📊 Skill Scores: ${skillsText}\n` +
+      `⏱️ ASL: ${data.metrics.average_shot_length}s | CPM: ${data.metrics.cuts_per_minute}\n` +
+      `💡 Key Strengths: ${data.strengths.slice(0, 2).join("; ")}\n` +
+      `🎯 Recommended Next: ${data.next_practice?.title || "Next Challenge"}`;
+    navigator.clipboard.writeText(text);
+    setCopiedSummary(true);
+    setTimeout(() => setCopiedSummary(false), 2000);
+  };
+
 
   useEffect(() => {
     fetch(`/api/analysis/${analysisId}`)
@@ -220,7 +261,7 @@ export default function FeedbackScreen({ params }: { params: Promise<{ id: strin
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Top Header Card */}
-      <div className="p-6 rounded-2xl bg-white border border-[#e5ede7] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl bg-white border border-[#e5ede7] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="text-[11px] font-mono text-[#2e7354] font-bold uppercase tracking-widest">
             {t("coach_session_badge")} #{data.id.slice(-6)}
@@ -228,7 +269,38 @@ export default function FeedbackScreen({ params }: { params: Promise<{ id: strin
           <h1 className="text-2xl font-bold tracking-tight text-[#141f19]">{t("feedback_title")}</h1>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Export Markers Button */}
+          <button
+            onClick={() => setShowExportModal(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#eef6f1] hover:bg-[#e1f0e6] text-[#163324] text-xs font-bold border border-[#cce8d7] transition cursor-pointer shadow-xs no-print"
+            title="Export Timeline Markers (EDL / CSV)"
+          >
+            <Download className="w-3.5 h-3.5 text-[#2e7354]" />
+            <span>{t("btn_export_markers")}</span>
+          </button>
+
+          {/* Share Performance Card Button */}
+          <button
+            onClick={() => setShowShareModal(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-[#f6faf7] text-[#141f19] text-xs font-semibold border border-[#dce5df] transition cursor-pointer shadow-xs no-print"
+            title="Share Performance Card"
+          >
+            <Share2 className="w-3.5 h-3.5 text-[#2e7354]" />
+            <span className="hidden sm:inline">{t("btn_share_card")}</span>
+          </button>
+
+          {/* Print / Save PDF Button */}
+          <button
+            onClick={handlePrint}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-[#f6faf7] text-[#141f19] text-xs font-semibold border border-[#dce5df] transition cursor-pointer shadow-xs no-print"
+            title="Print or Save PDF"
+          >
+            <Printer className="w-3.5 h-3.5 text-[#5e6d64]" />
+            <span className="hidden sm:inline">{t("btn_print_report")}</span>
+          </button>
+
+          {/* Score Display Badge */}
           <div className="flex items-baseline gap-2 bg-[#f8faf8] px-4 py-2 rounded-xl border border-[#e2ece5]">
             <span className="text-xs text-[#5e6d64] font-medium">{t("overall_score_label")}</span>
             <span
@@ -263,11 +335,20 @@ export default function FeedbackScreen({ params }: { params: Promise<{ id: strin
               playsInline
             />
 
+            {/* Safe Zone & Composition Overlay */}
+            <SafeZoneOverlay mode={safeZoneMode} onModeChange={setSafeZoneMode} />
+
             {/* Timecode overlay */}
-            <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/60 backdrop-blur border border-white/10 text-white font-mono text-xs tracking-wider">
+            <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/60 backdrop-blur border border-white/10 text-white font-mono text-xs tracking-wider z-30 pointer-events-none">
               {formatTime(currentTime)} / {formatTime(duration)}
             </div>
+
+            {/* Top Right Safe Zone Quick Switcher */}
+            <div className="absolute top-3 right-3 z-30 opacity-90 hover:opacity-100 transition no-print">
+              <SafeZoneToolbar mode={safeZoneMode} onModeChange={setSafeZoneMode} />
+            </div>
           </div>
+
 
           {/* Player Controls */}
           <div className="p-3.5 rounded-2xl bg-white border border-[#e5ede7] flex items-center justify-between gap-4 shadow-xs">
@@ -572,6 +653,268 @@ export default function FeedbackScreen({ params }: { params: Promise<{ id: strin
           )}
         </div>
       </div>
+
+      {/* MODAL 1: Export Markers (EDL / CSV) */}
+      {showExportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs no-print">
+          <div className="relative w-full max-w-2xl bg-white rounded-3xl border border-[#dce5df] shadow-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-start justify-between border-b border-[#e5ede7] pb-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#2e7354] uppercase tracking-wider">
+                  <Download className="w-4 h-4" />
+                  <span>Timeline Marker Exporter</span>
+                </div>
+                <h2 className="text-xl font-bold text-[#141f19]">{t("export_markers_title")}</h2>
+                <p className="text-xs text-[#5e6d64] leading-relaxed">{t("export_markers_sub")}</p>
+              </div>
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="p-2 rounded-full hover:bg-[#f0f5f2] text-[#5e6d64] hover:text-[#141f19] transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Two Download Options */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Option 1: DaVinci Resolve EDL */}
+              <div className="p-5 rounded-2xl bg-[#f7faf8] border-2 border-[#2e7354]/30 hover:border-[#2e7354] transition space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[#2e7354] text-white">
+                      Recommended
+                    </span>
+                    <span className="text-xs font-mono text-[#5e6d64]">.EDL</span>
+                  </div>
+                  <h3 className="font-bold text-[#141f19] text-sm">DaVinci Resolve 19 Marker EDL</h3>
+                  <p className="text-[11px] text-[#5e6d64] leading-relaxed">{t("edl_desc")}</p>
+                  
+                  {/* Marker Color Legend */}
+                  <div className="pt-2 flex flex-wrap gap-1.5 text-[9px] font-mono">
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">● Green (Good)</span>
+                    <span className="px-1.5 py-0.5 rounded bg-yellow-100 text-yellow-800 border border-yellow-300">● Yellow (Pacing)</span>
+                    <span className="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-300">● Red (Dead Air)</span>
+                    <span className="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 border border-sky-300">● Cyan (Audio)</span>
+                  </div>
+                </div>
+
+                <a
+                  href={`/api/analysis/${analysisId}/export/markers.edl`}
+                  download={`editlab_markers_${analysisId.slice(-6)}.edl`}
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#163324] hover:bg-[#1e4230] text-white text-xs font-bold transition shadow-xs cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5 text-[#7dd3a6]" />
+                  <span>{t("btn_download_edl")}</span>
+                </a>
+              </div>
+
+              {/* Option 2: Universal CSV */}
+              <div className="p-5 rounded-2xl bg-[#f7faf8] border border-[#dce5df] hover:border-[#2e7354]/50 transition space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[#e2ece5] text-[#163324]">
+                      Universal
+                    </span>
+                    <span className="text-xs font-mono text-[#5e6d64]">.CSV</span>
+                  </div>
+                  <h3 className="font-bold text-[#141f19] text-sm">Premiere Pro & Universal Marker CSV</h3>
+                  <p className="text-[11px] text-[#5e6d64] leading-relaxed">{t("csv_desc")}</p>
+                  
+                  <div className="pt-2 text-[10px] text-[#5e6d64] font-mono bg-white p-2 rounded-lg border border-[#e2ece5]">
+                    Columns: In, Out, Marker Name, Description, Duration, Color
+                  </div>
+                </div>
+
+                <a
+                  href={`/api/analysis/${analysisId}/export/markers.csv`}
+                  download={`editlab_markers_${analysisId.slice(-6)}.csv`}
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-[#f6faf7] text-[#141f19] text-xs font-bold border border-[#dce5df] transition shadow-xs cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5 text-[#2e7354]" />
+                  <span>{t("btn_download_csv")}</span>
+                </a>
+              </div>
+            </div>
+
+            {/* How to Import Guide */}
+            <div className="p-5 rounded-2xl bg-[#f0f5f2] border border-[#dcebe1] space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#163324]">
+                  <HelpCircle className="w-4 h-4 text-[#2e7354]" />
+                  <span>{t("nle_import_guide_title")}</span>
+                </div>
+
+                {/* Software Tabs */}
+                <div className="inline-flex rounded-lg bg-white p-0.5 border border-[#cce0d4] text-[10px] font-semibold">
+                  <button
+                    type="button"
+                    onClick={() => setActiveNleTab("davinci")}
+                    className={`px-2.5 py-1 rounded-md transition cursor-pointer ${
+                      activeNleTab === "davinci" ? "bg-[#163324] text-white" : "text-[#5e6d64]"
+                    }`}
+                  >
+                    DaVinci Resolve 19
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveNleTab("premiere")}
+                    className={`px-2.5 py-1 rounded-md transition cursor-pointer ${
+                      activeNleTab === "premiere" ? "bg-[#163324] text-white" : "text-[#5e6d64]"
+                    }`}
+                  >
+                    Premiere Pro
+                  </button>
+                </div>
+              </div>
+
+              {activeNleTab === "davinci" ? (
+                <div className="space-y-2 text-xs text-[#374151]">
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-[#163324] text-white font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <p>{t("nle_import_step1")}</p>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-[#163324] text-white font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <p>{t("nle_import_step2")}</p>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-[#163324] text-white font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                    <p>{language === "th" ? "กด Shift+Down / Shift+Up เพื่อกระโดดข้ามระหว่าง Markers บนไทม์ไลน์ได้อย่างรวดเร็ว" : "Use Shift+Down / Shift+Up on your keyboard to snap directly between coaching markers!"}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2 text-xs text-[#374151]">
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-[#163324] text-white font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <p>{language === "th" ? "เปิด Sequence ใน Premiere Pro แล้วไปที่หน้าต่าง Markers (Window -> Markers)" : "Open your sequence in Premiere Pro and open the Markers panel (Window -> Markers)."}</p>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-[#163324] text-white font-mono text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <p>{language === "th" ? "คลิกขวาที่หน้าต่าง Markers หรือใช้เมนู File -> Import เพื่อนำเข้าไฟล์ .csv หรือ .edl" : "Right-click in the Markers panel or go to File -> Import to load the .csv or .edl markers."}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="button"
+                onClick={() => setShowExportModal(false)}
+                className="px-5 py-2.5 rounded-xl bg-[#eef6f1] hover:bg-[#e1f0e6] text-[#163324] text-xs font-bold transition cursor-pointer"
+              >
+                {language === "th" ? "ปิดหน้าต่าง" : "Done"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: Share Performance Card */}
+      {showShareModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs no-print">
+          <div className="relative w-full max-w-xl bg-white rounded-3xl border border-[#dce5df] shadow-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-start justify-between border-b border-[#e5ede7] pb-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#2e7354] uppercase tracking-wider">
+                  <Award className="w-4 h-4" />
+                  <span>Editor Performance Card</span>
+                </div>
+                <h2 className="text-xl font-bold text-[#141f19]">{t("share_card_title")}</h2>
+              </div>
+              <button
+                onClick={() => setShowShareModal(false)}
+                className="p-2 rounded-full hover:bg-[#f0f5f2] text-[#5e6d64] hover:text-[#141f19] transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Performance Card Graphic */}
+            <div className="p-6 rounded-2xl bg-radial from-[#1e4230] to-[#0e2117] text-white border border-[#2b5943] shadow-lg space-y-5">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-[#2e7354] flex items-center justify-center text-white font-bold font-mono text-sm">
+                    E
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm tracking-wide">EditLab Coach</div>
+                    <div className="text-[10px] text-[#9fd6b5] font-mono">Session #{data.id.slice(-6)}</div>
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <div className="text-3xl font-extrabold font-mono text-[#7dd3a6]">
+                    {data.overall_score}
+                    <span className="text-xs text-white/50 font-normal">/100</span>
+                  </div>
+                  <div className="text-[10px] font-mono text-[#c1d9cc] uppercase tracking-wider">
+                    {data.overall_score >= 80 ? "Master of Cadence" : data.overall_score >= 65 ? "Solid Rhythm" : "Rising Editor"}
+                  </div>
+                </div>
+              </div>
+
+              {/* Skills Grid */}
+              <div className="grid grid-cols-2 gap-3 pt-1">
+                {Object.entries(data.skills).map(([key, score]) => (
+                  <div key={key} className="bg-black/25 p-2.5 rounded-xl border border-white/5 space-y-1">
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-white/80 font-mono uppercase tracking-wider">{key}</span>
+                      <span className="font-bold font-mono text-[#7dd3a6]">{score}</span>
+                    </div>
+                    <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-[#2e7354]"
+                        style={{ width: `${score}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Quick Metrics Bar */}
+              <div className="flex items-center justify-between bg-black/30 p-2.5 rounded-xl text-[11px] font-mono text-[#c1d9cc] border border-white/5">
+                <div>ASL: <span className="text-white font-bold">{data.metrics.average_shot_length}s</span></div>
+                <div>CPM: <span className="text-white font-bold">{data.metrics.cuts_per_minute}</span></div>
+                <div>Shots: <span className="text-white font-bold">{data.metrics.shot_count}</span></div>
+                <div>Speech: <span className="text-white font-bold">{Math.round(data.metrics.speech_ratio * 100)}%</span></div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+              <button
+                type="button"
+                onClick={handleCopySummary}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#163324] hover:bg-[#1e4230] text-white text-xs font-bold transition shadow-xs cursor-pointer"
+              >
+                {copiedSummary ? <Check className="w-4 h-4 text-[#7dd3a6]" /> : <Copy className="w-4 h-4 text-[#7dd3a6]" />}
+                <span>{copiedSummary ? t("summary_copied") : t("btn_copy_summary")}</span>
+              </button>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={handlePrint}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-[#f6faf7] text-[#141f19] text-xs font-semibold border border-[#dce5df] transition cursor-pointer"
+                >
+                  <Printer className="w-4 h-4 text-[#5e6d64]" />
+                  <span>{t("btn_print_report")}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowShareModal(false)}
+                  className="px-4 py-2.5 rounded-xl bg-[#eef6f1] hover:bg-[#e1f0e6] text-[#163324] text-xs font-bold transition cursor-pointer"
+                >
+                  {language === "th" ? "ปิด" : "Close"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

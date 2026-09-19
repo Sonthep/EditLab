@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { EXERCISE_TRANSLATIONS_TH } from "@/lib/curriculumTranslations";
+import SafeZoneOverlay, { SafeZoneMode, SafeZoneToolbar } from "@/components/SafeZoneOverlay";
 
 interface TargetMetrics {
   target_duration_min?: number;
@@ -97,6 +98,7 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
   const [folderNotice, setFolderNotice] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<"raw" | "sample">("raw");
   const [selectedSoftware, setSelectedSoftware] = useState<"davinci" | "capcut">("davinci");
+  const [safeZoneMode, setSafeZoneMode] = useState<SafeZoneMode>("none");
 
   useEffect(() => {
     // Fetch exercise detail
@@ -369,10 +371,19 @@ export default function PracticeChallengePage({ params }: { params: Promise<{ id
                 preload="metadata"
                 className="w-full h-full object-contain"
               />
-              <div className="absolute top-2.5 left-2.5 pointer-events-none">
+
+              {/* Safe Zone Overlay */}
+              <SafeZoneOverlay mode={safeZoneMode} onModeChange={setSafeZoneMode} />
+
+              <div className="absolute top-2.5 left-2.5 pointer-events-none z-30">
                 <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold tracking-wide uppercase bg-black/70 text-white backdrop-blur-xs border border-white/10">
                   {previewMode === "raw" ? t("raw_preview_badge") : "BENCHMARK SAMPLE SOLUTION"}
                 </span>
+              </div>
+
+              {/* Top-right Safe Zone Toolbar */}
+              <div className="absolute top-2.5 right-2.5 z-30 opacity-90 hover:opacity-100 transition">
+                <SafeZoneToolbar mode={safeZoneMode} onModeChange={setSafeZoneMode} />
               </div>
             </div>
 

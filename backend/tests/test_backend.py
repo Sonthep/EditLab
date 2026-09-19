@@ -92,3 +92,47 @@ def test_gemini_provider_fallback():
     assert analysis.overall_score > 0
     assert "pacing" in analysis.skills
 
+def test_marker_export_edl_and_csv():
+    from backend.services.video.markers_service import seconds_to_smpte, generate_edl_markers, generate_csv_markers
+    
+    # Test timecode converter
+    assert seconds_to_smpte(0.0, 30.0) == "00:00:00:00"
+    assert seconds_to_smpte(4.5, 30.0) == "00:00:04:15"
+    assert seconds_to_smpte(65.0, 30.0) == "00:01:05:00"
+    
+    test_events = [
+        {
+            "start": 4.5,
+            "end": 5.3,
+            "type": "dead_air",
+            "severity": "warning",
+            "message": "Long pause detected",
+            "suggestion": "Trim dead air"
+        },
+        {
+            "start": 12.0,
+            "end": 14.0,
+            "type": "good_cut",
+            "severity": "good",
+            "message": "Smooth cut on action",
+            "suggestion": "Keep this rhythm"
+        }
+    ]
+    
+    # Test EDL output
+    edl = generate_edl_markers("test_analysis_123", test_events, fps=30.0)
+    assert "TITLE: EditLab Coaching Markers" in edl
+    assert "FCM: NON-DROP FRAME" in edl
+    assert "001  AX       V     C        00:00:04:15 00:00:04:15" in edl
+    assert "ResolveColorRed" in edl
+    assert "ResolveColorGreen" in edl
+    
+    # Test CSV output
+    csv_str = generate_csv_markers(test_events, fps=30.0)
+    assert "Marker Name" in csv_str
+    assert "Description" in csv_str
+    assert "Red" in csv_str
+    assert "Green" in csv_str
+    assert "00:00:04:15" in csv_str
+
+
