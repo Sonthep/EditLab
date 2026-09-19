@@ -209,14 +209,19 @@ export default function CurriculumPage() {
                           )}
                         </div>
                         <div>
-                          <div className="text-sm font-semibold text-[#141f19] group-hover:text-[#1b5e3a] transition">
-                            {lessonTitle}
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-semibold text-[#141f19] group-hover:text-[#1b5e3a] transition">
+                              {lessonTitle}
+                            </span>
+                            <span className="hidden md:inline-flex items-center gap-1 text-[9px] font-mono font-bold text-[#2e7354] bg-[#eef6f1] px-2 py-0.5 rounded-md border border-[#cce8d7]">
+                              🎬 4-Step Masterclass
+                            </span>
                           </div>
-                          <div className="text-xs text-[#5e6d64] line-clamp-1">{lessonDesc}</div>
+                          <div className="text-xs text-[#5e6d64] line-clamp-1 mt-0.5">{lessonDesc}</div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs">
+                      <div className="flex items-center gap-3 text-xs">
                         <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-[#f2f6f3] text-[#5e6d64] border border-[#e0eae3] font-mono text-[11px]">
                           {language === "th" && lesson.difficulty === "Beginner"
                             ? "เบื้องต้น"
@@ -232,6 +237,7 @@ export default function CurriculumPage() {
                         </span>
                         <ArrowRight className="w-4 h-4 text-[#8a9990] group-hover:text-[#163324] group-hover:translate-x-0.5 transition" />
                       </div>
+
                     </Link>
                   );
                 })}
